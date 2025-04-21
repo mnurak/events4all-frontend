@@ -1,0 +1,29 @@
+const mongoose = require("mongoose");
+
+const registrationSchema = mongoose.Schema({
+  student_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "students",
+    required: true,
+  },
+  event_id: {
+    type: mongoose.Schema.Types.ObjectId,
+    ref: "events",
+    required: true,
+  },
+  registration_date: {
+    type: Date,
+    default: Date.now,
+  },
+  verification: {
+    type: String,
+    enum: ["awaiting", "verified", "cancelled"],
+    default: "awaiting",
+  }
+});
+
+
+registrationSchema.index({ student_id: 1, event_id: 1 }, { unique: true });
+
+const Registrations = mongoose.model('registrations', registrationSchema);
+module.exports = Registrations;
