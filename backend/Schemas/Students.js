@@ -14,7 +14,7 @@ const studentSchema = mongoose.Schema({
     type: String,
     required: true,
   },
-  college : {
+  collegeID : {
     type: mongoose.Schema.Types.ObjectId,
     ref:'college'
   }

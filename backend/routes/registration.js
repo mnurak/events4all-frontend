@@ -1,0 +1,168 @@
+const express = require("express");
+const { body, validationResult } = require("express-validator");
+const fetchuser = require("../midleware/fetchuser");
+const Events = require("../Schemas/Events");
+const Registrations = require("../Schemas/Registrations");
+const Students = require("../Schemas/Students");
+const Colleges = require("../Schemas/Colleges");
+const router = express.Router();
+
+// api for event registration from student side
+router.post(
+  "/registration/create/:id",
+  fetchuser,
+  [
+    body("participants", "atleast one participent is required")
+      .isArray({ min: 1 })
+      .custom((arr) => {
+        if (!arr.every((p) => p.name && p.usn)) {
+          throw new Error("Each participant must have a name and a USN");
+        }
+        return true;
+      }),
+    body(
+      "participants.*.name",
+      "name must consist of at least 3 letters"
+    ).isLength({ min: 3 }),
+    body(
+      "participants.*.usn",
+      "only letters and numbers are vallid no spaces in between"
+    ).matches(/^[A-Z0-9]+$/i),
+  ],
+  async (req, res) => {
+    let success = false;
+    const errors = validationResult(req);
+    if (!errors.isEmpty()) {
+      return res.status(400).json({ success: false, errors: errors.array() });
+    }
+
+    try {
+      const eventID = req.params.id;
+
+      const event = await Events.findById(eventID);
+      if (!event)
+        return res.status(400).send({ success, error: "no events were found" });
+      const student = await Students.findById(req.user.id);
+      if (!student)
+        return res
+          .status(400)
+          .send({ success, error: "invalid authentication token" });
+
+      let reg = await Registrations.findOne({
+        student_id: req.user.id,
+        event_id: req.params.id,
+      });
+
+      if (reg)
+        return res
+          .status(400)
+          .send({ success, error: "already registered to the event" });
+
+      if (req.body.participants.length > event.maxParticipantsPerTeam)
+        return res.status(400).send({
+          success,
+          error: "Number of participants exceeds the allowed limit",
+        });
+      // const validator = require("validator");
+
+      // req.body.participants = req.body.participants.map((p) => ({
+      //   name: validator.escape(p.name.trim()),
+      //   usn: validator.escape(p.usn.trim()),
+      // }));
+
+      reg = await Registrations.create({
+        participants: req.body.participants,
+        student_id: req.user.id,
+        event_id: eventID,
+      });
+      success = true;
+      res.send({ success, reg });
+    } catch (error) {
+      res.status(500).send({ success, error: "internal server error" });
+    }
+  }
+);
+
+//get registrations of the student done for diffrent event --> by taking his id
+router.get("/registration/student/get", fetchuser, async (req, res) => {
+  let success = false;
+  try {
+    const student = await Students.findById(req.user.id);
+    if (!student)
+      return res
+        .status(400)
+        .send({ success, error: "invalid authentication token" });
+    const regs = await Registrations.find({ student_id: student._id });
+    if (!regs || regs.length === 0)
+      return res.status(404).send({ success, error: "no records found " });
+    res.send({ success: true, regs });
+  } catch (error) {
+    res.status(500).send({ success, error: "Internal server error" });
+  }
+});
+
+//get registrations initiated for a specific college --> by taking college id
+router.get("/registration/college/get", fetchuser, async (req, res) => {
+  let success = false;
+  try {
+    const college = await Colleges.findById(req.user.id);
+    if (!college)
+      return res
+        .status(400)
+        .send({ success, error: "invalid authentication token" });
+    const events = await Events.find({ collegeID: college._id });
+    if (!events || events.length === 0)
+      return res.status(404).send({ success, error: "no records found " });
+    const allRegs = await Promise.all(
+      events.map((event) => Registrations.find({ event_id: event._id }))
+    );
+
+    // Flatten the results (since each one is an array)
+    const regs = allRegs.flat();
+
+    // const regs = await Events.find({ collegeID: college._id })
+    //   .populate({
+    //     path: "registrations", // Populating the `registrations` field in the Event
+    //     populate: {
+    //       path: "student_id", // Populating the `student_id` within each Registration
+    //       select: "name usn", // You can specify which fields you want from the Student model
+    //     },
+    //   })
+    //   .exec();
+
+    res.send({ success: true, regs });
+  } catch (error) {
+    console.log(error);
+    res.status(500).send({ success, error });
+  }
+});
+
+//delete the regestration --> by taking in the registration id from the front end
+router.delete("/registration/delete/:id", fetchuser, async (req, res) => {
+  let success = false;
+  try {
+    const student = await Students.findById(req.user.id);
+    if (!student)
+      return res
+        .status(400)
+        .send({ success, error: "invalid authentication token" });
+
+    let reg = await Registrations.findById(req.params.id);
+
+    if (!reg)
+      return res
+        .status(400)
+        .send({ success, error: "please enter valid details" });
+
+    if (req.user.id !== reg.student_id.toString())
+      return res.status(404).send({ success, error: "invalid authentication" });
+
+    const user = await Registrations.findByIdAndDelete(reg._id);
+    success = true;
+    res.send({ success, user, message: "Registration successfyl" });
+  } catch (error) {
+    res.status(500).send({ success, error: "Internal server error" });
+  }
+});
+
+module.exports = router;

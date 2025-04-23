@@ -4,7 +4,7 @@ const mongoURL = "mongodb://localhost:27017/fun?appName=MongoDB+Compass&directCo
 
 const connectToMongo = () => {
     mongoose.connect(mongoURL).then(() => {
-        console.log("You are connected to you mongodb")
+        console.log("You are connected to mongodb")
     }).catch((error) => {
         console.error("Error connecting to MongoDB:", error);
     });

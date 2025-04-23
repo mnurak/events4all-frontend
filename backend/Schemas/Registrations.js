@@ -1,5 +1,16 @@
 const mongoose = require("mongoose");
 
+const participants = mongoose.Schema({
+  name:{
+    type: String,
+    required: true
+  },
+  usn:{
+    type: String,
+    required: true
+  }
+}, { _id: false })
+
 const registrationSchema = mongoose.Schema({
   student_id: {
     type: mongoose.Schema.Types.ObjectId,
@@ -11,6 +22,7 @@ const registrationSchema = mongoose.Schema({
     ref: "events",
     required: true,
   },
+  participants:[participants],
   registration_date: {
     type: Date,
     default: Date.now,

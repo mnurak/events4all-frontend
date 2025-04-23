@@ -9,7 +9,7 @@ const eventSchema = mongoose.Schema({
     type: Date,
     required: true,
   },
-  regestrationEndDate :{
+  registrationEndDate :{
     type: Date,
     required: true,
     validate: {
@@ -23,9 +23,13 @@ const eventSchema = mongoose.Schema({
     type: String,
     required: true
   },
-  college_id: {
+  collegeID: {
     type: mongoose.Schema.Types.ObjectId,
     ref: 'College',
+  },
+  maxParticipantsPerTeam:{
+    type: Number,
+    default: 1
   },
   maxParticipants: {
     type: Number,
@@ -37,12 +41,12 @@ const eventSchema = mongoose.Schema({
   },
   status: {
     type: String,
-    enum: ['active', 'completed', 'cancelled'],
+    enum: ['active', "closed", "awaiting"],
     default: 'active',
   },
-});
+}, { timestamps: true });
 
-eventSchema.index({ college_id: 1, title: 1 }, { unique: true });
+eventSchema.index({ collegeID: 1, title: 1 }, { unique: true });
 
-const Event = mongoose.model('events', eventSchema);
-module.exports = Event;
+const Events = mongoose.model('events', eventSchema);
+module.exports = Events;
