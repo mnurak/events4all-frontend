@@ -5,7 +5,7 @@ import CollegeRegister from "./register/CollegeRegister";
 import { useNavigate } from "react-router-dom";
 
 const Register = () => {
-  const { user, authenticated } = useContext(AuthContext);
+  const { user, authenticated, loading } = useContext(AuthContext);
   const navigate = useNavigate();
 
   const checkAuthentication = () => {
@@ -16,8 +16,12 @@ const Register = () => {
   };
 
   useEffect(() => {
-    checkAuthentication();
+    if(!loading)
+      checkAuthentication()
   }, [authenticated]);
+
+  if(loading)
+    return <div>loding...</div>
 
   return <>{user === "student" ? <StudentRegister /> : <CollegeRegister />}</>;
 };

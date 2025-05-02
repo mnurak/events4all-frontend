@@ -3,6 +3,7 @@ import Input from "../../components/Input";
 import EventContext from "../../context/events/EventContext";
 
 const StudentRegister = () => {
+
   const [details, setDetails] = useState({
     maxParticipantsPerTeam: 1,
     name: "",
@@ -36,6 +37,20 @@ const StudentRegister = () => {
   };
 
   useEffect(() => {
+    const queryParams = new URLSearchParams(window.location.search);
+    const id = queryParams.get("id");
+
+    const event = events.find((event) => event._id === id);
+    if (event) {
+      setDetails(event);
+      setParticipantsCount(
+        Math.min(event.maxParticipantsPerTeam, participantsCount)
+      );
+    }
+    console.log(details)
+  }, [events]);
+
+  useEffect(() => {
     if (participantsCount > participants.length) {
       const newParticipants = [...participants];
       for (let i = participants.length; i < participantsCount; i++) {
@@ -54,8 +69,7 @@ const StudentRegister = () => {
   };
 
   const submit = async () => {
-    // console.log(details._id)
-    // console.log(JSON.stringify(participants))
+
     try {
       const response = await fetch(
         `http://localhost:5001/api/registration/create/${details._id}`,
@@ -65,7 +79,7 @@ const StudentRegister = () => {
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem("auth-token"),
           },
-          body: JSON.stringify({participants}),
+          body: JSON.stringify({ participants }),
         }
       );
       const json = await response.json();
@@ -79,7 +93,12 @@ const StudentRegister = () => {
     <div className="max-w-lg mx-auto p-6 bg-white rounded-lg shadow-md">
       <div className="mb-8">
         <div>
-          <select onChange={chose} name="event_id" id="event_id">
+          <select
+            onChange={chose}
+            name="event_id"
+            id="event_id"
+            value={details._id}
+          >
             {events.map((event) => {
               return (
                 <option key={event._id} value={event._id}>

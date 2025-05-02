@@ -28,7 +28,7 @@ const Events = () => {
   if (events.length === 0) return <div>Loading events...</div>;
 
   const register = (id) => {
-    if (user === "student") navigate(`/events/register?id=${id}`);
+    if (user === "student") navigate(`/event/register?id=${id}`);
     else alert("Only students can register");
   };
 
@@ -100,7 +100,7 @@ const Events = () => {
                 <img
                   src={event.image || "images/poster.jpg"}
                   alt={`${event.title} poster`}
-                  className="transition-transform duration-450 ease-in-out transform hover:scale-300"
+                  className="transition-transform duration-450 ease-in-out transform hover:scale-200"
                 />
               </div>
             </div>
