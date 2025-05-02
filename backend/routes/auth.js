@@ -26,7 +26,7 @@ router.post(
 
     const errors = validationResult(req);
     if (!errors.isEmpty)
-      return res.status(400).json({ success, errors: errors.array() });
+      return res.status(400).json({ success, error: errors.array() });
 
     try {
       //assuming the body is structured in the json of required type
@@ -44,8 +44,7 @@ router.post(
       success = true;
       res.json({ success, authToken });
     } catch (error) {
-      console.error(error.message);
-      res.status(500).send("error has occured");
+      res.status(500).send({success, error:error.message});
     }
   }
 );

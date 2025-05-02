@@ -73,7 +73,7 @@ router.post(
       res.json({ success, event });
     } catch (error) {
       console.log(error);
-      res.status(400).send({ success, error: "internal server error" });
+      res.status(400).send({ success, error });
     }
   }
 );
@@ -153,8 +153,8 @@ router.patch(
   }
 );
 
-//get events for the students
-router.get("/event/student/get", async (req, res) => {
+//get events
+router.get("/event/events/get", async (req, res) => {
   let success = false;
   try {
     const events = await Events.find();
