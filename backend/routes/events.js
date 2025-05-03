@@ -49,7 +49,7 @@ router.post(
         .send({ success, error: "Invalid college or title" });
     }
     let event = await Events.findOne({ title, collegeID });
-    console.log("evnets are " + event)
+    console.log("evnets are " + event);
     if (event)
       return res
         .status(400)
@@ -67,7 +67,7 @@ router.post(
         status,
         collegeID,
       });
-      console.log(input)
+      console.log(input);
       event = await Events.create(input);
       success = true;
       res.json({ success, event });

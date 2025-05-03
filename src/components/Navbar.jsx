@@ -4,7 +4,7 @@ import { useNavigate } from "react-router-dom";
 import AuthContext from "../context/auth/AuthContext";
 
 const Navbar = () => {
-  const { authenticated, changeAuth, changeUser } = useContext(AuthContext);
+  const { authenticated, user, changeAuth, changeUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const logout = () => {
     console.log("logging out")
@@ -19,6 +19,7 @@ const Navbar = () => {
       <Linkto link="/" text="Home" />
       <Linkto link="/events" text="Events" />
       <Linkto link="/event/register" text="register" />
+      {authenticated && <Linkto link="registered" text={user==='college'?'created':'registered'} />}
       <Linkto link="/about" text="About" />
       {!authenticated ? (
         <Linkto link="/auth" text="Signup/Login" />

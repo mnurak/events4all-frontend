@@ -101,6 +101,39 @@ router.get("/registration/student/get", fetchuser, async (req, res) => {
   }
 });
 
+router.patch("/registration/student/edit/:id", fetchuser, async (req, res) => {
+  let success = false;
+
+  try {
+    const student = await Students.findById(req.user.id);
+    if (!student)
+      return res
+        .status(400)
+        .send({ success, error: "invalid authentication token" });
+    let reg = await Registrations.findById(req.params.id);
+    if (!reg)
+      return res
+        .status(400)
+        .send({ success, error: "please enter valid details" });
+    if (req.user.id !== reg.student_id.toString())
+      return res.status(404).send({ success, error: "invalid authentication" });
+    const { participants } = req.body;
+    const input = {
+      participants,
+    };
+    reg = await Registrations.findByIdAndUpdate(
+      req.params.id,
+      { $set: input },
+      { new: true }
+    );
+    success = true;
+    res.send({ success, reg });
+  } catch (error) {
+    console.error(error);
+    res.status(500).send({ success, error: "Internal server error" });
+  }
+});
+
 //get registrations initiated for a specific college --> by taking college id
 router.get("/registration/college/get", fetchuser, async (req, res) => {
   let success = false;

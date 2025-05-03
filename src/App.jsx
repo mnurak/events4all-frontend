@@ -6,6 +6,8 @@ import College from "./pages/College";
 import Events from "./pages/Events";
 import Register from "./pages/Register";
 import About from "./pages/About";
+import Registered from "./pages/Registered";
+import StudentCorrection from "./pages/edit/StudentCorrection";
 
 function App() {
   return (
@@ -17,8 +19,10 @@ function App() {
           <Route exact path="/about" element={<About />} />
           <Route exact path="/auth" element={<Auth />} />
           <Route exact path="/events" element={<Events />} />
+          <Route exact path="/registered" element={<Registered />} />
           <Route exact path="/college" element={<College />} />
           <Route exact path="/event/register" element={<Register />} />
+          <Route exact path="/correction" element={<StudentCorrection />} />
         </Routes>
       </Router>
     </>

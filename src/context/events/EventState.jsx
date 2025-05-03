@@ -25,25 +25,16 @@ const EventState = (props) => {
   };
   const getUserEvents = async () => {
     try {
-      console.log(user)
       const response = await fetch(
         `http://localhost:5001/api/event/${user}/get`,
         {
           method: "GET",
           headers: {
             "auth-token": localStorage.getItem("auth-token"),
-          }
+          },
         }
       );
-      // console.log(response)
-      // const reponce = await fetch(`http://localhost:5001/api/event//get`, {
-      //   method:'GET',
-      //   headers: {
-      //     "auth-token": localStorage.getItem("auth-token"),
-      //   },
-      // });
       const json = await response.json();
-      console.log(json);
       if (json.success) setUserEvents(json.events);
     } catch (error) {
       console.log(error);
@@ -55,7 +46,9 @@ const EventState = (props) => {
   }, []);
 
   return (
-    <EventContext.Provider value={{ events, userEvents, getEvents, getUserEvents }}>
+    <EventContext.Provider
+      value={{ events, userEvents, getEvents, getUserEvents }}
+    >
       {props.children}
     </EventContext.Provider>
   );

@@ -27,12 +27,11 @@ const StudentRegister = () => {
     let value = e.target.value;
     if (value === "") {
       setParticipantsCount(1);
-      return;
     }
     value = Number(value);
     if (!isNaN(value)) {
       value = Math.min(value, details?.maxParticipantsPerTeam || 1);
-      setParticipantsCount(value > 0 ? value : 1);
+      setParticipantsCount(value);
     }
   };
 
@@ -142,7 +141,7 @@ const StudentRegister = () => {
           </div>
         ))}
         <div className="flex justify-center m-1 p-1">
-          <button onClick={submit} className="mt-3">
+          <button disabled={!participantsCount>0} onClick={submit} className="mt-3">
             Submit
           </button>
         </div>
