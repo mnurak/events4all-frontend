@@ -101,6 +101,7 @@ router.get("/registration/student/get", fetchuser, async (req, res) => {
   }
 });
 
+//to edit a registratioon form of an student
 router.patch("/registration/student/edit/:id", fetchuser, async (req, res) => {
   let success = false;
 
@@ -150,18 +151,7 @@ router.get("/registration/college/get", fetchuser, async (req, res) => {
       events.map((event) => Registrations.find({ event_id: event._id }))
     );
 
-    // Flatten the results (since each one is an array)
     const regs = allRegs.flat();
-
-    // const regs = await Events.find({ collegeID: college._id })
-    //   .populate({
-    //     path: "registrations", // Populating the `registrations` field in the Event
-    //     populate: {
-    //       path: "student_id", // Populating the `student_id` within each Registration
-    //       select: "name usn", // You can specify which fields you want from the Student model
-    //     },
-    //   })
-    //   .exec();
 
     res.send({ success: true, regs });
   } catch (error) {

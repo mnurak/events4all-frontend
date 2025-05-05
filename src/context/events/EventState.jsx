@@ -6,6 +6,7 @@ const EventState = (props) => {
   const { user } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
   const [userEvents, setUserEvents] = useState([]);
+  const [fetched, setFetched] = useState(false);
 
   const getEvents = async () => {
     try {
@@ -43,6 +44,7 @@ const EventState = (props) => {
   useEffect(() => {
     getEvents();
     getUserEvents();
+    setFetched(true)
   }, []);
 
   return (
