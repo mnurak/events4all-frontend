@@ -29,18 +29,15 @@ const Login = (props) => {
     const json = await response.json()
 
     if(json.success){
-      console.log(json)
-      // localStorage.setItem('auth-token', )
       
       changeAuth(json.authToken)
       changeUser(props.type)
       props.show({success:true, message: "successfll logged in"})
       setTimeout(() => {
-        navigate(props.type=='college'?'/college':'/')
+        navigate(props.type=='college'?'/registered':'/')
       }, 1500);
     } else {
       props.show({success:false, message:"invalid credential"})
-      console.log(json)
     }
   }
 

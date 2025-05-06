@@ -3,7 +3,7 @@ import EventContext from "./EventContext";
 import AuthContext from "../auth/AuthContext";
 
 const EventState = (props) => {
-  const { user } = useContext(AuthContext);
+  const { user, finishedAuthentication } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
   const [userEvents, setUserEvents] = useState([]);
   const [fetched, setFetched] = useState(false);
@@ -45,11 +45,11 @@ const EventState = (props) => {
     getEvents();
     getUserEvents();
     setFetched(true)
-  }, []);
+  }, [finishedAuthentication]);
 
   return (
     <EventContext.Provider
-      value={{ events, userEvents, getEvents, getUserEvents }}
+      value={{ events, userEvents, getEvents, getUserEvents, fetched }}
     >
       {props.children}
     </EventContext.Provider>

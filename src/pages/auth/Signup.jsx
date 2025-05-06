@@ -32,21 +32,15 @@ const Signup = (props) => {
     );
 
     const json = await response.json();
-    console.log(json);
-    // console.log(json.sucess);
     if (json.success) {
       changeAuth(json.authToken);
       changeUser(props.type);
       props.show({ success: true, message: "successfuly signed up" });
       setTimeout(() => {
-        navigate(props.type == "college" ? "/college" : "/");
+        navigate(props.type == "college" ? "/registered" : "/");
       }, 1500);
-      console.log("Sucessfull sign up", "success");
     } else {
-      // alert("invalid credentials");
-      console.log(json);
       props.show({ success: false, message: json.error });
-      // console.log("invalid credentials", "danger");
     }
   };
 

@@ -7,7 +7,6 @@ const Navbar = () => {
   const { authenticated, user, changeAuth, changeUser } = useContext(AuthContext);
   const navigate = useNavigate();
   const logout = () => {
-    console.log("logging out")
     localStorage.removeItem("auth-token");
     changeUser("student");
     changeAuth(false);

@@ -1,11 +1,13 @@
 import React, { useContext, useEffect, useState } from "react";
 import RegisterContext from "./RegisterContext";
 import AuthContext from "../auth/AuthContext";
+import EventContext from "../events/EventContext";
 
 const RegisterState = (props) => {
   const { user } = useContext(AuthContext);
-  const [fetched, setfetched] = useState(false);
+  const {fetched} = useContext(EventContext)
   const [registrations, setRegistrations] = useState([]);
+  const [loading, setLoading] = useState(true);
 
   const getRegistrations = async () => {
     try {
@@ -28,15 +30,13 @@ const RegisterState = (props) => {
 
   useEffect(() => {
     getRegistrations();
-  }, []);
+    setLoading(false)
+  }, [fetched]);
 
-  useEffect(() => {
-    setfetched(true);
-  }, [registrations]);
 
   return (
     <RegisterContext.Provider
-      value={{ registrations, getRegistrations, fetched }}
+      value={{ registrations, getRegistrations, loading }}
     >
       {props.children}
     </RegisterContext.Provider>

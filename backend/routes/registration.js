@@ -188,4 +188,38 @@ router.delete("/registration/delete/:id", fetchuser, async (req, res) => {
   }
 });
 
+
+// to approve or reject the registration from college side
+router.patch('/registration/approval/:id', fetchuser, async(req, res)=>{
+  let success = false;
+  try {
+    const register = await Registrations.findById(req.params.id)
+    if(!register)
+      return res.status(404).send({success, error:"No Registration found"})
+    const event = await Events.findById(register.event_id)
+    console.log("\n\nThese is the event :\n\n")
+    console.log(event)
+    console.log(req.user.id)
+    if(req.user.id !== event.collegeID.toString())
+      return res.status(404).send({ success, error: "invalid authentication" });
+    if (typeof req.body.approval !== 'boolean') {
+      return res.status(400).send({ success, error: "Approval must be a boolean value" });
+    }    
+    const verification = req.body.approval === true ? 'verified' : 'rejected';
+
+    console.log(verification)
+    reg = await Registrations.findByIdAndUpdate(
+      req.params.id,
+      { $set: {verification} },
+      { new: true }
+    );
+    console.log(reg)
+    res.send({ success: true, reg });
+
+  } catch (error) {
+    console.log(error)
+    return res.status(500).send({ success: false, error: "Internal server error" });
+  }
+})
+
 module.exports = router;

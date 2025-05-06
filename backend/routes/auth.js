@@ -1,3 +1,4 @@
+require('dotenv').config();
 const express = require("express")
 const Colleges = require("../Schemas/Colleges")
 const Students = require("../Schemas/Students")
@@ -5,7 +6,8 @@ const { body, validationResult } = require("express-validator")
 const bcrypt = require("bcryptjs")
 const jwt = require("jsonwebtoken")
 const router = express.Router()
-const JWT_SECRET = "helpme"
+const JWT_SECRET = process.env.JWT_SECRET;
+console.log(JWT_SECRET)
 
 //route 1: college sign up --> new college db creation
 router.post(

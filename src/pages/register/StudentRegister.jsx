@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import Input from "../../components/Input";
 import EventContext from "../../context/events/EventContext";
+import { useNavigate } from "react-router-dom";
 
 const StudentRegister = () => {
 
@@ -8,9 +9,10 @@ const StudentRegister = () => {
     maxParticipantsPerTeam: 1,
     name: "",
   });
-  const { events } = useContext(EventContext);
+  const { events, getEvents } = useContext(EventContext);
   const [participants, setParticipants] = useState([{ name: "", usn: "" }]);
   const [participantsCount, setParticipantsCount] = useState(1);
+  const navigate = useNavigate()
 
   const chose = (e) => {
     const id = e.target.value;
@@ -46,7 +48,6 @@ const StudentRegister = () => {
         Math.min(event.maxParticipantsPerTeam, participantsCount)
       );
     }
-    console.log(details)
   }, [events]);
 
   useEffect(() => {
@@ -67,6 +68,10 @@ const StudentRegister = () => {
     setParticipants(updatedParticipants);
   };
 
+  useEffect(() => {
+    getEvents()
+  }, []);
+
   const submit = async () => {
 
     try {
@@ -82,7 +87,7 @@ const StudentRegister = () => {
         }
       );
       const json = await response.json();
-      if (json.success) console.log(json);
+      if (json.success) navigate('/registered')
     } catch (error) {
       console.log(error);
     }

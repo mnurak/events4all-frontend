@@ -4,7 +4,7 @@ import AuthContext from "./AuthContext";
 const AuthState = (props) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState("student");
-  const [loading, setLoading] = useState(true);
+  const [finishedAuthentication, setFinishedAuthentication] = useState(false);
 
   const changeAuth = (c) => {
     if (c === false) {
@@ -24,11 +24,11 @@ const AuthState = (props) => {
       setAuthenticated(true);
     }
     if (localStorage.getItem("user")) setUser(localStorage.getItem("user"));
-    setLoading(false)
+    setFinishedAuthentication(true)
   }, []);
   return (
     <AuthContext.Provider
-      value={{ authenticated, user, changeAuth, changeUser, loading }}
+      value={{ authenticated, user, changeAuth, changeUser, finishedAuthentication }}
     >
       {props.children}
     </AuthContext.Provider>

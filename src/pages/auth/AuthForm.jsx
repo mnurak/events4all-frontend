@@ -9,7 +9,6 @@ const AuthForm = (props) => {
   const [Message, setMessage] = useState('');
 
   const show = (par) => {
-    console.log(typeof(par))
     const {success, message} = par
     settype(success?'success':'danger')
     setMessage(message)

@@ -12,8 +12,6 @@ const CollegeCorrection = () => {
   const queryparms = new URLSearchParams(window.location.search);
   const id = queryparms.get("id");
   useEffect(() => {
-    console.log(user);
-    console.log(userEvents);
     getUserEvents();
   }, [user]);
   useEffect(() => {
@@ -35,7 +33,6 @@ const CollegeCorrection = () => {
         })
         const json = await responce.json()
         if(json.success){
-            console.log('event updated successfully')
             navigate('/registered')
         }
     } catch (error) {

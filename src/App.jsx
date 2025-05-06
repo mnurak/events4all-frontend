@@ -9,6 +9,7 @@ import About from "./pages/About";
 import Registered from "./pages/Registered";
 import StudentCorrection from "./pages/edit/StudentCorrection";
 import CollegeCorrection from "./pages/edit/CollegeCorrection";
+import GetEventRegistration from "./pages/getRegistered/GetEventRegistration";
 
 function App() {
   return (
@@ -21,6 +22,7 @@ function App() {
           <Route exact path="/auth" element={<Auth />} />
           <Route exact path="/events" element={<Events />} />
           <Route exact path="/registered" element={<Registered />} />
+          <Route exact path="/registered/student" element={<GetEventRegistration />} />
           <Route exact path="/event/register" element={<Register />} />
           <Route exact path="/correction/student" element={<StudentCorrection />} />
           <Route exact path="/correction/college" element={<CollegeCorrection />} />

@@ -1,6 +1,10 @@
 const express = require("express");
 const cors = require("cors");
 const connectToMongo = require('./dbs')
+require('dotenv').config(); 
+
+const JWT_SECRET = process.env.JWT_SECRET;
+console.log(JWT_SECRET)
 
 const app = express();
 const port = 5001;

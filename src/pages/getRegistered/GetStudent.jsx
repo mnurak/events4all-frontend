@@ -34,6 +34,10 @@ const GetStudent = () => {
     navigate(`/correction/student?id=${id}`);
   };
 
+  useEffect(() => {
+    getRegistrations()
+  }, []);
+
   return (
     <div>
       <div className="relative">

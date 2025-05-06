@@ -20,6 +20,10 @@ const GetCollege = () => {
     navigate(`/correction/college?id=${id}`);
   };
 
+  const getStudents = (id)=>{
+    navigate(`student?id=${id}`)
+  }
+
   return (
     <div>
       <div className="relative">
@@ -75,7 +79,7 @@ const GetCollege = () => {
                   </section>
 
                   <section>
-                    <button className="w-65 mx-2 p-1 my-2">
+                    <button onClick={()=>getStudents(event._id)} className="w-65 mx-2 p-1 my-2">
                       get registered students
                     </button>
                   </section>

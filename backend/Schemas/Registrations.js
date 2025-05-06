@@ -29,7 +29,7 @@ const registrationSchema = mongoose.Schema({
   },
   verification: {
     type: String,
-    enum: ["awaiting", "verified", "cancelled"],
+    enum: ["awaiting", "verified", "rejected"],
     default: "awaiting",
   }
 });
