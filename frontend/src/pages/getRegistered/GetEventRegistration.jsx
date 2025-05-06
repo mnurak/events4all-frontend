@@ -100,24 +100,24 @@ const GetEventRegistration = () => {
                     </tr>
                   ))}
                 </tbody>
-                {registar.verification === "awaiting" ? (
-                  <div className="mx-5 space-x-3.5">
-                    <button onClick={() => submit(true, registar._id)}>
-                      <span>Approve</span>
-                    </button>
-                    <button
-                      className="bg-red-400"
-                      onClick={() => submit(false, registar._id)}
-                    >
-                      <span>Reject</span>
-                    </button>
-                  </div>
-                ) : (
-                  <p className="flex justify-center items-center text-2xl font-semibold bg-gradient-to-r from-green-400 via-teal-500 to-green-400 text-white rounded-full p-1 w-40 max-w-xs shadow-lg">
-                    {registar.verification}
-                  </p>
-                )}
               </table>
+              {registar.verification === "awaiting" ? (
+                <div className="mx-5 space-x-3.5">
+                  <button onClick={() => submit(true, registar._id)}>
+                    <span>Approve</span>
+                  </button>
+                  <button
+                    className="bg-red-400"
+                    onClick={() => submit(false, registar._id)}
+                  >
+                    <span>Reject</span>
+                  </button>
+                </div>
+              ) : (
+                <p className="flex justify-center items-center text-2xl font-semibold bg-gradient-to-r from-green-400 via-teal-500 to-green-400 text-white rounded-full p-1 w-40 max-w-xs shadow-lg">
+                  {registar.verification}
+                </p>
+              )}
             </div>
           ))
         ) : (

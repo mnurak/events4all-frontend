@@ -43,7 +43,6 @@ const EventState = (props) => {
   };
   useEffect(() => {
     getEvents();
-    getUserEvents();
     setFetched(true)
   }, [finishedAuthentication]);
 

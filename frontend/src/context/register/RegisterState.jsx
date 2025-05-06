@@ -28,10 +28,10 @@ const RegisterState = (props) => {
     }
   };
 
-  useEffect(() => {
-    getRegistrations();
-    setLoading(false)
-  }, [fetched]);
+  useEffect(()=>{
+    if(fetched)
+      setLoading(false)
+  }, [fetched])
 
 
   return (

@@ -5,9 +5,9 @@ import Alert from "../../components/Alert";
 import RegisterContext from "../../context/register/RegisterContext";
 
 const GetStudent = () => {
-    
   const { events } = useContext(EventContext);
-  const { registrations, getRegistrations } = useContext(RegisterContext);
+  const { registrations, getRegistrations, loading } =
+    useContext(RegisterContext);
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
 
@@ -35,8 +35,9 @@ const GetStudent = () => {
   };
 
   useEffect(() => {
-    getRegistrations()
-  }, []);
+    if(!loading)
+    getRegistrations();
+  }, [loading]);
 
   return (
     <div>
@@ -77,15 +78,15 @@ const GetStudent = () => {
                     ))}
                   </div>
                 </div>
-                <p className="text-gray-600">
+                <p className="text-gray-600 font-bold mt-2.5">
                   Status:{" "}
-                  <strong className="text-amber-500">{event.status}</strong>
+                  <strong className={event.status==='awaiting'?`text-amber-500 `:event.status==='verified'?`text-green-500 `:'text-red-500'}>{event.status}</strong>
                 </p>
                 <h1 className="mt-5">Description</h1>
                 <div className="mt-2 h-10 w-80 overflow-y-auto flex justify-center">
                   {event.description}
                 </div>
-                {event.status !== "verified" ? (
+                {event.status === "awaiting" ? (
                   <button
                     onClick={() => register(event.id)}
                     className="mt-4 bg-blue-400 text-[#1A1A1A] hover:bg-blue-600 hover:text-white"
@@ -93,8 +94,8 @@ const GetStudent = () => {
                     edit the form
                   </button>
                 ) : (
-                  <section>
-                    <span>Once verified cannot edit the form</span>
+                  <section className="mt-2">
+                    <span>Once <strong>verified/rejected</strong> cannot edit the form</span>
                   </section>
                 )}
               </div>

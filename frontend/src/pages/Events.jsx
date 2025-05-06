@@ -50,7 +50,7 @@ const Events = () => {
       </header>
 
       <div className="flex justify-center mb-4">
-        <select onChange={filter} className="border rounded p-2">
+        <select onChange={filter} id="category" className="border rounded p-2">
           <option value="all">All Events</option>
           <option value="active">Active Events</option>
           <option value="closed">Closed Events</option>

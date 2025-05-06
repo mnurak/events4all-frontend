@@ -7,8 +7,9 @@ import { useNavigate } from "react-router-dom";
 const StudentCorrection = () => {
   const navigate = useNavigate();
   const { events } = useContext(EventContext);
-  const { registrations, fetched } = useContext(RegisterContext);
-  
+  const { registrations, getRegistrations, loading } =
+    useContext(RegisterContext);
+
   const [registrationDetails, setRegistrationDetails] = useState();
   const [details, setDetails] = useState({
     maxParticipantsPerTeam: 1,
@@ -16,9 +17,8 @@ const StudentCorrection = () => {
   });
   const [participantsCount, setParticipantsCount] = useState(1);
   const [participants, setParticipants] = useState([{ name: "", usn: "" }]);
-  const [id, setId] = useState('');
+  const [id, setId] = useState("");
 
-  // Update number of participants
   const updateNumber = (e) => {
     let value = e.target.value;
     if (value === "") {
@@ -31,14 +31,12 @@ const StudentCorrection = () => {
     }
   };
 
-  // Update a specific participant's information
   const updateParticipant = (index, key, value) => {
     const updatedParticipants = [...participants];
     updatedParticipants[index][key] = value;
     setParticipants(updatedParticipants);
   };
 
-  // Ensure that participants count matches the number of inputs
   useEffect(() => {
     if (participantsCount > participants.length) {
       const newParticipants = [...participants];
@@ -51,19 +49,16 @@ const StudentCorrection = () => {
     }
   }, [participantsCount]);
 
-  // Fetch the ID from query params after the component mounts
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
     setId(queryParams.get("id"));
   }, []);
 
-  // Fetch registration and event details when ID is available
   useEffect(() => {
-    if (id && fetched) {
+    if (id && !loading) {
       const registrationDetail = registrations.find((r) => r._id === id);
-      setRegistrationDetails(registrationDetail);
-
       if (registrationDetail) {
+        setRegistrationDetails(registrationDetail);
         const eventDetail = events.find(
           (item) => item._id === registrationDetail.event_id
         );
@@ -71,24 +66,27 @@ const StudentCorrection = () => {
         setParticipants(registrationDetail.participants || []);
         setParticipantsCount(registrationDetail.participants.length);
       }
+    } else {
+      getRegistrations();
     }
-  }, [id, fetched, registrations, events]);
+  }, [id, loading, registrations, events]);
 
-  // Handle form submission
   const submit = async (e) => {
-    e.preventDefault(); // Prevent default form submission
     try {
-      const response = await fetch(`http://localhost:5001/api/registration/student/edit/${id}`, {
-        method: 'PATCH',
-        headers: {
-          'Content-Type': 'application/json',
-          'auth-token': localStorage.getItem('auth-token')
-        },
-        body: JSON.stringify({ participants })
-      });
+      const response = await fetch(
+        `http://localhost:5001/api/registration/student/edit/${id}`,
+        {
+          method: "PATCH",
+          headers: {
+            "Content-Type": "application/json",
+            "auth-token": localStorage.getItem("auth-token"),
+          },
+          body: JSON.stringify({ participants }),
+        }
+      );
       const json = await response.json();
       if (json.success) {
-        navigate('/registered');
+        navigate("/registered");
       }
     } catch (error) {
       console.log(error);
@@ -114,7 +112,7 @@ const StudentCorrection = () => {
         <div key={index}>
           <Input
             type="text"
-            value={participant.name}
+            value={participant.name || ""} // Ensure value is an empty string if undefined
             update={(e) => updateParticipant(index, "name", e.target.value)}
             placeholder={`Name of participant ${index + 1}`}
             message={`Name of participant ${index + 1}`}
@@ -122,7 +120,7 @@ const StudentCorrection = () => {
           />
           <Input
             type="text"
-            value={participant.usn}
+            value={participant.usn || ""} // Ensure value is an empty string if undefined
             update={(e) => updateParticipant(index, "usn", e.target.value)}
             placeholder={`USN of participant ${index + 1}`}
             message={`USN of participant ${index + 1}`}
