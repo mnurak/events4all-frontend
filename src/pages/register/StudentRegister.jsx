@@ -12,6 +12,7 @@ const StudentRegister = () => {
   const { events, getEvents } = useContext(EventContext);
   const [participants, setParticipants] = useState([{ name: "", usn: "" }]);
   const [participantsCount, setParticipantsCount] = useState(1);
+  const [team_name, setTeam_name] = useState();
   const navigate = useNavigate()
 
   const chose = (e) => {
@@ -36,6 +37,10 @@ const StudentRegister = () => {
       setParticipantsCount(value);
     }
   };
+
+  const updateTeamName = (e) =>{
+    setTeam_name(e.target.value)
+  }
 
   useEffect(() => {
     const queryParams = new URLSearchParams(window.location.search);
@@ -83,7 +88,7 @@ const StudentRegister = () => {
             "Content-Type": "application/json",
             "auth-token": localStorage.getItem("auth-token"),
           },
-          body: JSON.stringify({ participants }),
+          body: JSON.stringify({ participants, team_name }),
         }
       );
       const json = await response.json();
@@ -111,6 +116,15 @@ const StudentRegister = () => {
               );
             })}
           </select>
+        </div>
+        <div>
+          <Input
+            type="text"
+            update={updateTeamName}
+            placeholder="Enter the team name"
+            message="Team Name"
+            name="team_name"
+          />
         </div>
         <div>
           <Input
