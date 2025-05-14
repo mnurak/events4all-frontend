@@ -2,6 +2,7 @@ import { useContext, useEffect, useState } from "react";
 import RegisterContext from "../../context/register/RegisterContext";
 import EventContext from "../../context/events/EventContext";
 import { useNavigate } from "react-router-dom";
+import AuthContext from "../../context/auth/AuthContext";
 
 const GetCollege = () => {
   const { loading } = useContext(RegisterContext);
