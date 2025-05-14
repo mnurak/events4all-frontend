@@ -4,7 +4,7 @@ import AuthContext from "../auth/AuthContext";
 import EventContext from "../events/EventContext";
 
 const RegisterState = (props) => {
-  const { user } = useContext(AuthContext);
+  const { user, BACKEND_LINK } = useContext(AuthContext);
   const {fetched} = useContext(EventContext)
   const [registrations, setRegistrations] = useState([]);
   const [loading, setLoading] = useState(true);
@@ -12,7 +12,7 @@ const RegisterState = (props) => {
   const getRegistrations = async () => {
     try {
       const responce = await fetch(
-        `http://localhost:5001/api/registration/${user}/get`,
+        `${BACKEND_LINK}/api/registration/${user}/get`,
         {
           method: "GET",
           headers: {

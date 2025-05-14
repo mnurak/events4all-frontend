@@ -5,7 +5,7 @@ const AuthState = (props) => {
   const [authenticated, setAuthenticated] = useState(false);
   const [user, setUser] = useState("student");
   const [finishedAuthentication, setFinishedAuthentication] = useState(false);
-
+  const BACKEND_LINK = import.meta.env.VITE_BACKEND_LINK;
   const changeAuth = (c) => {
     if (c === false) {
       setAuthenticated(false);
@@ -28,7 +28,7 @@ const AuthState = (props) => {
   }, []);
   return (
     <AuthContext.Provider
-      value={{ authenticated, user, changeAuth, changeUser, finishedAuthentication }}
+      value={{ authenticated, user, changeAuth, changeUser, finishedAuthentication, BACKEND_LINK }}
     >
       {props.children}
     </AuthContext.Provider>

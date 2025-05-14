@@ -3,7 +3,7 @@ import EventContext from "./EventContext";
 import AuthContext from "../auth/AuthContext";
 
 const EventState = (props) => {
-  const { user, finishedAuthentication } = useContext(AuthContext);
+  const { user, finishedAuthentication, BACKEND_LINK } = useContext(AuthContext);
   const [events, setEvents] = useState([]);
   const [userEvents, setUserEvents] = useState([]);
   const [fetched, setFetched] = useState(false);
@@ -11,7 +11,7 @@ const EventState = (props) => {
   const getEvents = async () => {
     try {
       const response = await fetch(
-        "http://localhost:5001/api/event/events/get",
+        `${BACKEND_LINK}/api/event/events/get`,
         {
           method: "GET",
         }
@@ -27,7 +27,7 @@ const EventState = (props) => {
   const getUserEvents = async () => {
     try {
       const response = await fetch(
-        `http://localhost:5001/api/event/${user}/get`,
+        `${BACKEND_LINK}/api/event/${user}/get`,
         {
           method: "GET",
           headers: {

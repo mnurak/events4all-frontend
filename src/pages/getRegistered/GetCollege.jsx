@@ -1,7 +1,6 @@
 import { useContext, useEffect, useState } from "react";
 import RegisterContext from "../../context/register/RegisterContext";
 import EventContext from "../../context/events/EventContext";
-import AuthContext from "../../context/auth/AuthContext";
 import { useNavigate } from "react-router-dom";
 
 const GetCollege = () => {
@@ -9,15 +8,17 @@ const GetCollege = () => {
   const navigate = useNavigate();
   const { userEvents, getUserEvents } = useContext(EventContext);
   const { user } = useContext(AuthContext);
+
   useEffect(() => {
     if (!loading) {
       if (user === "student") {
-        alert("you are not authenticated");
+        alert("You are not authenticated.");
         navigate("/auth");
       }
       getUserEvents();
     }
   }, [loading]);
+
   const updateEvent = (id) => {
     navigate(`/correction/college?id=${id}`);
   };
@@ -27,73 +28,65 @@ const GetCollege = () => {
   };
 
   return (
-    <div>
-      <div className="relative">
-        <header className="text-center mb-10 mt-10">
-          <h1 className="text-3xl font-bold">Events</h1>
-          <p className="text-lg">Keep track of the events created.</p>
-        </header>
-        <div className="flex justify-end h-7 px-5 mx-10">
-          <span
-            className="text-4xl w-15 h-7 flex justify-end hover:scale-110 px-3 hover:cursor-pointer"
-            onClick={() => {
-              getUserEvents();
-            }}
-          >
-            &#x21BB;
-          </span>
-        </div>
+    <div className="container mx-auto p-6">
+      <header className="text-center mb-12">
+        <h1 className="text-3xl font-bold text-gray-800">Events</h1>
+        <p className="text-lg text-gray-500">Keep track of the events created.</p>
+      </header>
+
+      <div className="flex justify-end mb-8 px-6">
+        <span
+          className="text-4xl cursor-pointer hover:scale-110 transition duration-300"
+          onClick={getUserEvents}
+        >
+          &#x21BB;
+        </span>
       </div>
 
-      <div className="grid grid-cols-2 gap-7 p-5 mx-10">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8">
         {userEvents.length > 0 &&
           userEvents.map((event) => (
-            <div key={event._id} className="border-2 rounded-lg flex p-1">
-              <div key={event.id} className="border-2 rounded-lg flex p-1 ">
-                <div className="p-4 shadow-md w-[65%]">
-                  <h2 className="text-xl font-semibold">{event.title}</h2>
-                  <p className="text-gray-600">
+            <div key={event._id} className="bg-white rounded-lg shadow-lg p-6">
+              <div className="flex flex-col sm:flex-row">
+                <div className="sm:w-2/3">
+                  <h2 className="text-2xl font-semibold text-gray-700">{event.title}</h2>
+                  <p className="text-gray-600 mt-2">
                     Date: {new Date(event.date).toLocaleDateString()}
                   </p>
                   <p className="text-gray-600">
-                    Registration Ends:{" "}
-                    {new Date(event.registrationEndDate).toLocaleDateString()}
+                    Registration Ends: {new Date(event.registrationEndDate).toLocaleDateString()}
                   </p>
-                  <p className="text-gray-500">
+                  <p className="text-gray-500 mt-2">
                     No of participants: {event.currentParticipants}
                   </p>
-                  <p className="text-gray-600">
+                  <p className="text-gray-600 mt-2">
                     Status:{" "}
                     <strong className="text-amber-500">{event.status}</strong>
                   </p>
-                  <h1 className="mt-5">Description</h1>
-                  <div className="mt-2 h-10 w-80 overflow-y-auto flex justify-center">
-                    {event.description}
-                  </div>
 
-                  <section>
+                  <h3 className="mt-5 text-lg font-semibold">Description</h3>
+                  <p className="text-gray-600 mt-2">{event.description}</p>
+
+                  <div className="mt-5 flex space-x-4">
                     <button
                       onClick={() => updateEvent(event._id)}
-                      className="w-50 mx-2 p-1 my-2 "
+                      className="bg-blue-500 text-white py-2 px-4 rounded-lg hover:bg-blue-600 transition"
                     >
-                      Edit event details
+                      Edit Event Details
                     </button>
-                  </section>
-
-                  <section>
                     <button
                       onClick={() => getStudents(event._id)}
-                      className="w-65 mx-2 p-1 my-2"
+                      className="bg-green-500 text-white py-2 px-4 rounded-lg hover:bg-green-600 transition"
                     >
-                      get registered students
+                      Get Registered Students
                     </button>
-                  </section>
+                  </div>
                 </div>
-                <div className="w-[35%] py-2 px-1">
+                <div className="sm:w-1/3 sm:pl-6 mt-4 sm:mt-0">
                   <img
                     src={event.image || "images/poster.jpg"}
                     alt={`${event.title} poster`}
-                    className="transition-transform duration-450 ease-in-out transform hover:scale-150"
+                    className="w-full h-auto rounded-lg object-cover transition-transform duration-500 ease-in-out transform hover:scale-105"
                   />
                 </div>
               </div>

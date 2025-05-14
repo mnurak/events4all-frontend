@@ -6,8 +6,7 @@ import RegisterContext from "../../context/register/RegisterContext";
 
 const GetStudent = () => {
   const { events } = useContext(EventContext);
-  const { registrations, getRegistrations, loading } =
-    useContext(RegisterContext);
+  const { registrations, getRegistrations, loading } = useContext(RegisterContext);
   const [details, setDetails] = useState([]);
   const navigate = useNavigate();
 
@@ -35,85 +34,85 @@ const GetStudent = () => {
   };
 
   useEffect(() => {
-    if(!loading)
-    getRegistrations();
+    if (!loading) getRegistrations();
   }, [loading]);
 
   return (
-    <div>
-      <div className="relative">
-        <header className="text-center mb-10 mt-10">
-          <h1 className="text-3xl font-bold">Registered Events</h1>
-          <p className="text-lg">Keep track of the events registered</p>
-        </header>
-        <div className="flex justify-end h-7 px-5 mx-10">
-          <span
-            className="text-4xl w-15 h-7 flex justify-end hover:scale-110 px-3 hover:cursor-pointer"
-            onClick={() => getRegistrations()}
-          >
-            &#x21BB;
-          </span>
-        </div>
+    <div className="py-8">
+      <header className="text-center mb-10">
+        <h1 className="text-3xl font-bold text-primary">Registered Events</h1>
+        <p className="text-lg text-gray-500">Keep track of the events registered</p>
+      </header>
+
+      <div className="flex justify-end px-10 mb-5">
+        <button
+          onClick={() => getRegistrations()}
+          className="text-4xl hover:scale-110 transition-transform"
+        >
+          &#x21BB;
+        </button>
       </div>
-      <div className="grid grid-cols-2 gap-7 p-5 mx-10">
-        {details.length > 0 &&
+
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-8 px-6 mx-auto max-w-screen-lg">
+        {details.length > 0 ? (
           details.map((event) => (
-            <div key={event.id} className="border-2 rounded-lg flex p-1 ">
-              <div className="p-4 shadow-md w-[65%]">
-                <h2 className="text-xl font-semibold">{event.title}</h2>
+            <div key={event.id} className="bg-white rounded-lg shadow-lg overflow-hidden">
+              <div className="p-6">
+                <h2 className="text-xl font-semibold text-primary mb-2">{event.title}</h2>
+                <p className="text-gray-600">Date: {new Date(event.date).toLocaleDateString()}</p>
                 <p className="text-gray-600">
-                  Date: {new Date(event.date).toLocaleDateString()}
+                  Registration Ends: {new Date(event.registrationEndDate).toLocaleDateString()}
                 </p>
-                <p className="text-gray-600">
-                  Registration Ends:{" "}
-                  {new Date(event.registrationEndDate).toLocaleDateString()}
-                </p>
-                <div>
-                  <h5>Participants</h5>
-                  <div>
-                    {event.participants?.map((participant, index) => (
-                      <li className="ml-3.5" key={participant.usn}>
-                        <span>{participant.name}</span>
-                      </li>
-                    ))}
-                  </div>
-                </div>
-                <p className="text-gray-600 font-bold mt-2.5">
+
+                <h3 className="mt-4 font-medium text-gray-800">Participants</h3>
+                <ul className="space-y-1 mt-2">
+                  {event.participants?.map((participant, index) => (
+                    <li key={participant.usn} className="text-gray-700">{participant.name}</li>
+                  ))}
+                </ul>
+
+                <p className="text-gray-600 font-bold mt-4">
                   Status:{" "}
-                  <strong className={event.status==='awaiting'?`text-amber-500 `:event.status==='verified'?`text-green-500 `:'text-red-500'}>{event.status}</strong>
+                  <span
+                    className={`${
+                      event.status === "awaiting" ? "text-amber-500" : event.status === "verified" ? "text-green-500" : "text-red-500"
+                    }`}
+                  >
+                    {event.status}
+                  </span>
                 </p>
-                <h1 className="mt-5">Description</h1>
-                <div className="mt-2 h-10 w-80 overflow-y-auto flex justify-center">
+
+                <h3 className="mt-4 text-gray-800 font-semibold">Description</h3>
+                <div className="mt-2 text-gray-600 h-20 overflow-y-auto">
                   {event.description}
                 </div>
+
                 {event.status === "awaiting" ? (
                   <button
                     onClick={() => register(event.id)}
-                    className="mt-4 bg-blue-400 text-[#1A1A1A] hover:bg-blue-600 hover:text-white"
+                    className="mt-4 bg-blue-500 text-white w-full py-2 rounded-lg hover:bg-blue-600 transition-colors"
                   >
-                    edit the form
+                    Edit the form
                   </button>
                 ) : (
-                  <section className="mt-2">
-                    <span>Once <strong>verified/rejected</strong> cannot edit the form</span>
-                  </section>
+                  <p className="mt-2 text-gray-500 text-center">Once verified/rejected, cannot edit the form.</p>
                 )}
               </div>
-              <div className="w-[35%] py-2 px-1">
+              <div className="relative">
                 <img
                   src={event.image || "images/poster.jpg"}
                   alt={`${event.title} poster`}
-                  className="transition-transform duration-450 ease-in-out transform hover:scale-150"
+                  className="w-full h-48 object-cover transition-transform duration-300 ease-in-out transform hover:scale-110"
                 />
               </div>
             </div>
-          ))}
+          ))
+        ) : (
+          <div className="w-full text-center mt-8">
+            <Alert alert="warning" message="No Registration found" />
+          </div>
+        )}
       </div>
-      {details.length === 0 && (
-        <div className="h-15 text-2xl flex  justify-center mx-20 p-0.5">
-          <Alert alert={"warning"} message={"No Registration found"}></Alert>
-        </div>
-      )}
     </div>
   );
 };

@@ -16,14 +16,21 @@ const Register = () => {
   };
 
   useEffect(() => {
-    if(!loading)
-      checkAuthentication()
-  }, [authenticated]);
+    checkAuthentication();
+  }, [loading]);
 
-  if(loading)
-    return <div>loding...</div>
+  if (loading)
+    return (
+      <div className="text-center text-lg text-gray-600 mt-10">Loading...</div>
+    );
 
-  return <>{user === "student" ? <StudentRegister /> : <CollegeRegister />}</>;
+  return (
+    <div className="min-h-screen bg-gray-100 py-8 px-4">
+      <div className="max-w-3xl mx-auto">
+        {user === "student" ? <StudentRegister /> : <CollegeRegister />}
+      </div>
+    </div>
+  );
 };
 
 export default Register;

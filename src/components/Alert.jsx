@@ -1,33 +1,40 @@
 const Alert = ({ alert, message }) => {
   const alertStyles = {
     success: {
-      bg: "bg-green-500",
-      text: "text-blue-800",
+      bg: "bg-green-100",
+      text: "text-green-800",
+      icon: "✅",
     },
     danger: {
-      bg: "bg-red-300",
-      text: "text-red-900",
+      bg: "bg-red-100",
+      text: "text-red-800",
+      icon: "⛔",
     },
     warning: {
-      bg: "bg-yellow-500",
+      bg: "bg-yellow-100",
       text: "text-yellow-800",
+      icon: "⚠️",
     },
     default: {
-      bg: "bg-gray-400",
+      bg: "bg-gray-200",
       text: "text-gray-800",
+      icon: "ℹ️",
     },
   };
 
-  const { bg, text } = alertStyles[alert] || alertStyles.default;
+  const { bg, text, icon } = alertStyles[alert] || alertStyles.default;
 
   return (
     <div
-      className={`w-full h-full flex items-center justify-center font-bold ${bg} ${text} rounded-3xl`}
+      className={`flex items-center p-4 rounded-xl shadow-sm transition-all duration-300 ${bg} ${text}`}
     >
-      <div className="mx-2 p-1 font-extrabold">{alert}!</div>
-      <div className="mx-2 p-1">{message}</div>
+      <div className="text-2xl mr-3">{icon}</div>
+      <div className="flex flex-col">
+        <span className="font-semibold capitalize">{alert}</span>
+        <span>{message}</span>
+      </div>
     </div>
   );
 };
 
-export default Alert
+export default Alert;

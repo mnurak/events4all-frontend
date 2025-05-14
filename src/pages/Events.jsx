@@ -12,10 +12,9 @@ const Events = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    if (user === "college") setShow(false);
-    else setShow(true);
+    setShow(user === "student");
   }, [user]);
-  
+
   useEffect(() => {
     if (category === "all") {
       setFilterEvents(events);
@@ -25,7 +24,7 @@ const Events = () => {
     }
   }, [events, category]);
 
-  if (events.length === 0) return <div>Loading events...</div>;
+  if (events.length === 0) return <div className="text-center mt-10 text-gray-500">Loading events...</div>;
 
   const register = (id) => {
     if (user === "student") navigate(`/event/register?id=${id}`);
@@ -37,76 +36,72 @@ const Events = () => {
   };
 
   const refresh = () => {
-    getEvents()
+    getEvents();
   };
 
   return (
-    <div className="container mx-auto p-4">
-      <header className="text-center mb-6">
-        <h1 className="text-3xl font-bold">Upcoming Events</h1>
-        <p className="text-lg">
-          Explore various events held by different colleges.
-        </p>
+    <div className="container mx-auto px-4 py-6">
+      <header className="text-center mb-8">
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">Explore Events</h1>
+        <p className="text-lg text-gray-600">Browse and register for exciting upcoming events!</p>
       </header>
 
-      <div className="flex justify-center mb-4">
-        <select onChange={filter} id="category" className="border rounded p-2">
+      <div className="flex justify-center items-center gap-4 mb-6">
+        <select
+          onChange={filter}
+          id="category"
+          className="px-4 py-2 rounded-lg border border-gray-300 shadow-sm focus:outline-none focus:ring-2 focus:ring-blue-400"
+        >
           <option value="all">All Events</option>
           <option value="active">Active Events</option>
           <option value="closed">Closed Events</option>
           <option value="awaiting">Awaiting Events</option>
         </select>
-        <div
-          className="mx-5 text-3xl text-shadow-2xs hover:scale-110 hover:cursor-pointer cursor-auto"
+        <button
           onClick={refresh}
+          className="text-2xl hover:rotate-180 transform transition duration-300 ease-in-out"
+          title="Refresh"
         >
-          &#x21BB;
-        </div>
+          🔄
+        </button>
       </div>
 
-      <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+      <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filterEvents.length > 0 ? (
           filterEvents.map((event) => (
-            <div key={event._id} className="border rounded-lg flex">
-              <div className="p-4 shadow-md w-[65%]">
-                <h2 className="text-xl font-semibold">{event.title}</h2>
-                <p className="text-gray-600">
-                  Date: {new Date(event.date).toLocaleDateString()}
-                </p>
-                <p className="text-gray-600">
-                  Registration Ends:{" "}
-                  {new Date(event.registrationEndDate).toLocaleDateString()}
-                </p>
-                <p className="text-gray-600">
-                  Max Participants: {event.maxParticipants}
-                </p>
-                <p className="text-gray-600">
-                  Current Participants: {event.currentParticipants}
-                </p>
-                <p className="text-gray-600">Status: {event.status}</p>
-                <div className="mt-2 h-20 w-80 overflow-y-auto flex justify-center">
-                  {event.description}
+            <div key={event._id} className="bg-white rounded-xl shadow-lg flex overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+              <div className="w-2/3 p-6 flex flex-col justify-between">
+                <div>
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">{event.title}</h2>
+                  <div className="text-gray-600 text-sm space-y-1 mb-3">
+                    <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
+                    <p><strong>Registration Ends:</strong> {new Date(event.registrationEndDate).toLocaleDateString()}</p>
+                    <p><strong>Max Participants:</strong> {event.maxParticipants}</p>
+                    <p><strong>Current Participants:</strong> {event.currentParticipants}</p>
+                    <p><strong>Status:</strong> {event.status}</p>
+                  </div>
+                  <p className="text-sm text-gray-700 max-h-24 overflow-y-auto">{event.description}</p>
                 </div>
                 {show && (
                   <button
                     onClick={() => register(event._id)}
-                    className="mt-4 bg-blue-400 text-[#1A1A1A] hover:bg-blue-600 hover:text-white"
+                    className="mt-4 w-fit px-5 py-2 bg-blue-500 text-white rounded-full shadow hover:bg-blue-600 transition"
                   >
                     Register
                   </button>
                 )}
               </div>
-              <div className="w-[35%] py-2 px-1">
+              <div className="w-1/3 overflow-hidden">
                 <img
                   src={event.image || "images/poster.jpg"}
                   alt={`${event.title} poster`}
-                  className="transition-transform duration-450 ease-in-out transform hover:scale-200"
+                  className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
                 />
               </div>
             </div>
           ))
         ) : (
-          <div>No events found for the selected category.</div>
+          <div className="col-span-2 text-center text-gray-500">No events found for the selected category.</div>
         )}
       </div>
     </div>
