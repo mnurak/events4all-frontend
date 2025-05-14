@@ -31,7 +31,7 @@ const CollegeCorrection = () => {
 
   const handleSubmit = async () => {
     try {
-      const res = await fetch(`${BACKEND_LINK}/api/event/update/${id}`, {
+      const res = await fetch(`${BACKEND_LINK}api/event/update/${id}`, {
         method: "PATCH",
         headers: {
           "auth-token": localStorage.getItem("auth-token"),

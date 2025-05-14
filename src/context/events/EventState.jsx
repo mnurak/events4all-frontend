@@ -11,7 +11,7 @@ const EventState = (props) => {
   const getEvents = async () => {
     try {
       const response = await fetch(
-        `${BACKEND_LINK}/api/event/events/get`,
+        `${BACKEND_LINK}api/event/events/get`,
         {
           method: "GET",
         }
@@ -27,7 +27,7 @@ const EventState = (props) => {
   const getUserEvents = async () => {
     try {
       const response = await fetch(
-        `${BACKEND_LINK}/api/event/${user}/get`,
+        `${BACKEND_LINK}api/event/${user}/get`,
         {
           method: "GET",
           headers: {

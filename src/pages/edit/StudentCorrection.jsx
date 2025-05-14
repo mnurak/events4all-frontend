@@ -57,7 +57,7 @@ const StudentCorrection = () => {
 
   const submit = async () => {
     try {
-      const res = await fetch(`${BACKEND_LINK}/api/registration/student/edit/${id}`, {
+      const res = await fetch(`${BACKEND_LINK}api/registration/student/edit/${id}`, {
         method: "PATCH",
         headers: {
           "Content-Type": "application/json",

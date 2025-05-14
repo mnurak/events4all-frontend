@@ -81,7 +81,7 @@ const StudentRegister = () => {
   const submit = async () => {
     try {
       const response = await fetch(
-        `${BACKEND_LINK}/api/registration/create/${details._id}`,
+        `${BACKEND_LINK}api/registration/create/${details._id}`,
         {
           method: "POST",
           headers: {

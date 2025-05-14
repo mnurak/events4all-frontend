@@ -21,7 +21,7 @@ const CollegeRegister = () => {
 
   const submit = async () => {
     try {
-      const response = await fetch(`${BACKEND_LINK}/api/event/create`, {
+      const response = await fetch(`${BACKEND_LINK}api/event/create`, {
         method: "POST",
         headers: {
           "auth-token": localStorage.getItem("auth-token"),

@@ -29,7 +29,7 @@ const GetEventRegistration = () => {
   const submit = async (approval, id) => {
     try {
       const response = await fetch(
-        `${BACKEND_LINK}/api/registration/approval/${id}`,
+        `${BACKEND_LINK}api/registration/approval/${id}`,
         {
           method: "PATCH",
           headers: {

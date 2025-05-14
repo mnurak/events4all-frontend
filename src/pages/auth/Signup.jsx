@@ -22,7 +22,7 @@ const Signup = (props) => {
   const signup = async () => {
     try {
       const response = await fetch(
-        `${BACKEND_LINK}/api/auth/${props.type}/signup`,
+        `${BACKEND_LINK}api/auth/${props.type}/signup`,
         {
           method: "POST",
           headers: {

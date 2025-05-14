@@ -19,7 +19,7 @@ const Login = (props) => {
   const login = async () => {
     try {
       const response = await fetch(
-        `${BACKEND_LINK}/api/auth/${props.type}/login`,
+        `${BACKEND_LINK}api/auth/${props.type}/login`,
         {
           method: "POST",
           headers: {

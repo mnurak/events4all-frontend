@@ -12,7 +12,7 @@ const RegisterState = (props) => {
   const getRegistrations = async () => {
     try {
       const responce = await fetch(
-        `${BACKEND_LINK}/api/registration/${user}/get`,
+        `${BACKEND_LINK}api/registration/${user}/get`,
         {
           method: "GET",
           headers: {
