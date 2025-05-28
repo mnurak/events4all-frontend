@@ -9,14 +9,27 @@ const Login = (props) => {
     password: "",
     email: "",
   };
+
   const [credential, setCredential] = useState(defaultCredential);
+  const [desabled, setDesabled] = useState(true);
+
+  useEffect(() => {
+    const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credential.email);
+    const isValidPassword = credential.password.length > 7;
+    setDesabled(!(isValidEmail && isValidPassword));
+  }, [credential]);
+
+  useEffect(() => {
+    setCredential(defaultCredential);
+  }, [props]);
+
   const update = (e) => {
     setCredential({ ...credential, [e.target.name]: e.target.value });
+
   };
 
-  useEffect(() => setCredential(defaultCredential), [props]);
-
   const login = async () => {
+    if (desabled) return;
     try {
       const response = await fetch(
         `${BACKEND_LINK}api/auth/${props.type}/login`,
@@ -93,10 +106,15 @@ const Login = (props) => {
 
         <div className="mt-6">
           <button
-            className="w-full py-3 text-white font-semibold rounded-xl"
+            className={`w-full py-3 font-semibold rounded-xl ${
+              desabled
+                ? "bg-gray-400 cursor-not-allowed text-gray-200 transition-none"
+                : "bg-blue-600 hover:bg-blue-700 text-white transition duration-300"
+            }`}
             onClick={login}
+            disabled={desabled}
           >
-            Submit
+            Login
           </button>
         </div>
       </div>

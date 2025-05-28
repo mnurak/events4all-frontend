@@ -6,21 +6,28 @@
 @layer base {
   button {
     @apply 
-      bg-green-400 
-      px-5 
-      py-2.5 
+      bg-gradient-to-r 
+      from-teal-500 
+      to-indigo-600 
+      px-6 
+      py-3 
       rounded-xl 
-      text-gray-700 
+      text-white 
       font-semibold 
       shadow-md 
       transition-all 
       duration-200 
       ease-in-out 
       hover:scale-105 
-      hover:bg-green-600 
+      hover:bg-gradient-to-r 
+      hover:from-teal-400 
+      hover:to-indigo-700 
       hover:shadow-lg 
-      hover:text-black 
+      hover:text-white 
       hover:border 
-      hover:border-black;
+      hover:border-indigo-500
+      focus:outline-none; 
   }
 }
+
+

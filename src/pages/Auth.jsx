@@ -9,26 +9,20 @@ const Auth = () => {
   return (
     <>
       <div className="flex justify-center gap-4 mt-6">
-        <button
-          onClick={() => change("student")}
-          className={`px-6 py-2 rounded-full font-semibold text-white shadow-md transition-all duration-200 ${
-            choise === "student"
-              ? "bg-amber-600"
-              : "bg-amber-400 hover:bg-amber-500"
-          }`}
-        >
-          Student
-        </button>
-        <button
-          onClick={() => change("college")}
-          className={`px-6 py-2 rounded-full font-semibold text-white shadow-md transition-all duration-200 ${
-            choise === "college"
-              ? "bg-amber-600"
-              : "bg-amber-400 hover:bg-amber-500"
-          }`}
-        >
-          College
-        </button>
+        {["student", "college"].map((type) => (
+          <button
+            key={type}
+            onClick={() => change(type)}
+            className={`px-6 py-2 text-indigo-150 rounded-full font-semibold shadow-md transition-all duration-200 transform
+        ${
+          choise === type
+            ? "bg-amber-600 scale-105 ring-2 ring-indigo-950"
+            : "bg-amber-300  hover:bg-amber-400 hover:scale-105"
+        }`}
+          >
+            {type.charAt(0).toUpperCase() + type.slice(1)}
+          </button>
+        ))}
       </div>
 
       <AuthForm type={choise}></AuthForm>
