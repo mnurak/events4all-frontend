@@ -1,4 +1,4 @@
-const Alert = ({ alert, message }) => {
+const Alert = ({ alert, message, className }) => {
   const alertStyles = {
     success: {
       bg: "bg-green-100",
@@ -26,7 +26,7 @@ const Alert = ({ alert, message }) => {
 
   return (
     <div
-      className={`flex items-center p-4 rounded-xl shadow-sm transition-all duration-300 ${bg} ${text}`}
+      className={`flex items-center p-4 rounded-xl shadow-sm transition-all duration-300 ${bg} ${text} ${className}`}
     >
       <div className="text-2xl mr-3">{icon}</div>
       <div className="flex flex-col">

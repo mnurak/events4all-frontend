@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
+import Alert from "../../components/Alert";
 
 const Login = (props) => {
   const { changeAuth, changeUser, BACKEND_LINK } = useContext(AuthContext);
@@ -12,6 +13,8 @@ const Login = (props) => {
 
   const [credential, setCredential] = useState(defaultCredential);
   const [desabled, setDesabled] = useState(true);
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
 
   useEffect(() => {
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credential.email);
@@ -23,9 +26,29 @@ const Login = (props) => {
     setCredential(defaultCredential);
   }, [props]);
 
-  const update = (e) => {
-    setCredential({ ...credential, [e.target.name]: e.target.value });
+  const showTempAlert = (type) => {
+    if (type === "email") {
+      setEmailError(true);
+      setTimeout(() => setEmailError(false), 3000);
+    } else if (type === "password") {
+      setPasswordError(true);
+      setTimeout(() => setPasswordError(false), 3000);
+    }
+  };
 
+  const update = (e) => {
+    const { name, value } = e.target;
+    setCredential((prev) => ({ ...prev, [name]: value }));
+
+    if (
+      name === "email" &&
+      value &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+    ) {
+      showTempAlert("email");
+    } else if (name === "password" && value.length > 0 && value.length <= 7) {
+      showTempAlert("password");
+    }
   };
 
   const login = async () => {
@@ -84,6 +107,13 @@ const Login = (props) => {
             placeholder="Enter email"
             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
           />
+          {emailError && (
+            <Alert
+              className="mt-1 rounded px-2 py-1 text-sm font-medium"
+              message="Please enter a valid email address."
+              success={false}
+            />
+          )}
         </div>
 
         <div className="mb-4">
@@ -102,6 +132,13 @@ const Login = (props) => {
             placeholder="Enter password"
             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
           />
+          {passwordError && (
+            <Alert
+              className="mt-1 rounded px-2 py-1 text-sm font-medium"
+              message="Password must be at least 8 characters."
+              success={false}
+            />
+          )}
         </div>
 
         <div className="mt-6">

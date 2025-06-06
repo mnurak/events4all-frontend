@@ -1,6 +1,7 @@
 import React, { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router-dom";
 import AuthContext from "../../context/auth/AuthContext";
+import Alert from "../../components/Alert";
 
 const Signup = (props) => {
   const { changeAuth, changeUser, BACKEND_LINK } = useContext(AuthContext);
@@ -11,27 +12,57 @@ const Signup = (props) => {
     password: "",
     college: "",
     phoneNumber: "",
-    address:''
+    address: "",
   };
   const [credential, setCredential] = useState(defaultCredential);
   const [desabled, setDesabled] = useState(true);
 
+  const [emailError, setEmailError] = useState(false);
+  const [passwordError, setPasswordError] = useState(false);
+  const [phoneError, setPhoneError] = useState(false);
+
   useEffect(() => {
     const isValidEmail = /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(credential.email);
     const isValidPassword = credential.password.length > 7;
-    const isValidName = credential.name.length > 2
+    const isValidName = credential.name.length > 2;
     const others = () => {
-      if(props.type === 'student')
-        return credential.college.length > 2
-      return credential.phoneNumber.length === 10 && credential.address.length > 4
-    }
+      if (props.type === "student") return credential.college.length > 2;
+      return (
+        credential.phoneNumber.length === 10 && credential.address.length > 4
+      );
+    };
     setDesabled(!(isValidEmail && isValidPassword && isValidName && others()));
   }, [credential]);
 
   useEffect(() => setCredential(defaultCredential), [props]);
 
+  const showTempAlert = (type, phone) => {
+    if (type === "email") {
+      setEmailError(true);
+      setTimeout(() => setEmailError(false), 5000);
+    } else if (type === "password") {
+      setPasswordError(true);
+      setTimeout(() => setPasswordError(false), 5000);
+    } else if (type === 'phone'){
+      setPhoneError(true)
+      setTimeout(()=> setPhoneError(false), 5000)
+    }
+  };
+
   const update = (e) => {
+    const name = e.target.name;
+    const value = e.target.value;
     setCredential({ ...credential, [e.target.name]: e.target.value });
+    if (
+      name === "email" &&
+      value &&
+      !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(value)
+    ) {
+      showTempAlert("email");
+    } else if (name === "password" && value.length > 0 && value.length <= 7) {
+      showTempAlert("password");
+    } else if (name === "phoneNumber" && !/^\d{10}$/.test(value))
+      showTempAlert('phone')
   };
 
   const signup = async () => {
@@ -108,6 +139,13 @@ const Signup = (props) => {
             placeholder="Enter email"
             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
           />
+          {emailError && (
+            <Alert
+              className="mt-1 rounded px-2 py-1 text-sm font-medium"
+              message="Enter proper email"
+              success={false}
+            />
+          )}
         </div>
 
         <div className="mb-4">
@@ -126,6 +164,13 @@ const Signup = (props) => {
             placeholder="Enter password"
             className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
           />
+          {passwordError && (
+            <Alert
+              className="mt-1 rounded px-2 py-1 text-sm font-medium"
+              message="Password must be at least 8 characters."
+              success={false}
+            />
+          )}
         </div>
         {props.type === "college" ? (
           <div className="mb-4">
@@ -144,6 +189,13 @@ const Signup = (props) => {
               name="phoneNumber"
               className="w-full px-4 py-2 mt-2 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-400 focus:border-blue-400"
             />
+            {phoneError && (
+            <Alert
+              className="mt-1 rounded px-2 py-1 text-sm font-medium"
+              message="Phone number must have 10 digit numbers"
+              success={false}
+            />
+          )}
           </div>
         ) : (
           <div className="mb-4">
