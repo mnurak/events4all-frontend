@@ -24,7 +24,10 @@ const Events = () => {
     }
   }, [events, category]);
 
-  if (events.length === 0) return <div className="text-center mt-10 text-gray-500">Loading events...</div>;
+  if (events.length === 0)
+    return (
+      <div className="text-center mt-10 text-gray-500">Loading events...</div>
+    );
 
   const register = (id) => {
     if (user === "student") navigate(`/event/register?id=${id}`);
@@ -42,8 +45,12 @@ const Events = () => {
   return (
     <div className="container mx-auto px-4 py-6">
       <header className="text-center mb-8">
-        <h1 className="text-4xl font-bold text-gray-800 mb-2">Explore Events</h1>
-        <p className="text-lg text-gray-600">Browse and register for exciting upcoming events!</p>
+        <h1 className="text-4xl font-bold text-gray-800 mb-2">
+          Explore Events
+        </h1>
+        <p className="text-lg text-gray-600">
+          Browse and register for exciting upcoming events!
+        </p>
       </header>
 
       <div className="flex justify-center items-center gap-4 mb-6">
@@ -69,18 +76,38 @@ const Events = () => {
       <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
         {filterEvents.length > 0 ? (
           filterEvents.map((event) => (
-            <div key={event._id} className="bg-white rounded-xl shadow-lg flex overflow-hidden hover:shadow-2xl transition-shadow duration-300">
+            <div
+              key={event._id}
+              className="bg-white rounded-xl shadow-lg flex overflow-hidden hover:shadow-2xl transition-shadow duration-300"
+            >
               <div className="w-2/3 p-6 flex flex-col justify-between">
                 <div>
-                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">{event.title}</h2>
+                  <h2 className="text-2xl font-semibold text-gray-800 mb-2">
+                    {event.title}
+                  </h2>
                   <div className="text-gray-600 text-sm space-y-1 mb-3">
-                    <p><strong>Date:</strong> {new Date(event.date).toLocaleDateString()}</p>
-                    <p><strong>Registration Ends:</strong> {new Date(event.registrationEndDate).toLocaleDateString()}</p>
-                    <p><strong>Max Participants:</strong> {event.maxParticipants}</p>
-                    <p><strong>Current Participants:</strong> {event.currentParticipants}</p>
-                    <p><strong>Status:</strong> {event.status}</p>
+                    <p>
+                      <strong>Date:</strong>{" "}
+                      {new Date(event.date).toLocaleDateString()}
+                    </p>
+                    <p>
+                      <strong>Registration Ends:</strong>{" "}
+                      {new Date(event.registrationEndDate).toLocaleDateString()}
+                    </p>
+                    <p>
+                      <strong>Max Participants:</strong> {event.maxParticipants}
+                    </p>
+                    <p>
+                      <strong>Current Participants:</strong>{" "}
+                      {event.currentParticipants}
+                    </p>
+                    <p>
+                      <strong>Status:</strong> {event.status}
+                    </p>
                   </div>
-                  <p className="text-sm text-gray-700 max-h-24 overflow-y-auto">{event.description}</p>
+                  <p className="text-sm text-gray-700 max-h-24 overflow-y-auto">
+                    {event.description}
+                  </p>
                 </div>
                 {show && (
                   <button
@@ -92,16 +119,29 @@ const Events = () => {
                 )}
               </div>
               <div className="w-1/3 overflow-hidden">
-                <img
-                  src={event.image || "images/poster.jpg"}
-                  alt={`${event.title} poster`}
-                  className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
-                />
+                <a
+                  href={
+                    event.link && event.link !== "images/poster.jpg"
+                      ? event.link
+                      : null
+                  }
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block"
+                >
+                  <img
+                    src={event.link || "images/poster.jpg"}
+                    alt={`${event.title} poster / The college have not sent andy poster link`}
+                    className="object-cover w-full h-full transition-transform duration-300 hover:scale-110"
+                  />
+                </a>
               </div>
             </div>
           ))
         ) : (
-          <div className="col-span-2 text-center text-gray-500">No events found for the selected category.</div>
+          <div className="col-span-2 text-center text-gray-500">
+            No events found for the selected category.
+          </div>
         )}
       </div>
     </div>

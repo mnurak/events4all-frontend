@@ -39,13 +39,13 @@ const Signup = (props) => {
   const showTempAlert = (type, phone) => {
     if (type === "email") {
       setEmailError(true);
-      setTimeout(() => setEmailError(false), 5000);
+      setTimeout(() => setEmailError(false), 1500);
     } else if (type === "password") {
       setPasswordError(true);
-      setTimeout(() => setPasswordError(false), 5000);
+      setTimeout(() => setPasswordError(false), 1500);
     } else if (type === 'phone'){
       setPhoneError(true)
-      setTimeout(()=> setPhoneError(false), 5000)
+      setTimeout(()=> setPhoneError(false), 1500)
     }
   };
 

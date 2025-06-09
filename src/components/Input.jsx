@@ -20,6 +20,11 @@ const Input = (parms) => {
         max={parms.max}
         className="w-full px-4 py-3 border border-gray-300 rounded-lg focus:outline-none focus:ring-2 focus:ring-blue-500 focus:border-blue-500 transition duration-300 ease-in-out"
       />
+      {parms.description && (
+        <p className="text-sm text-orange-400 mb-2 mt-1.5">
+          {parms.description}
+        </p>
+      )}
     </div>
   );
 };

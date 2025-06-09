@@ -13,6 +13,7 @@ const CollegeRegister = () => {
     date: "",
     registrationEndDate: "",
     description: "",
+    link:"",
     maxParticipantsPerTeam: "",
     maxParticipants: "",
     currentParticipants: 0,
@@ -79,6 +80,15 @@ const CollegeRegister = () => {
           placeholder="Total participants required"
           message="Max Participants"
           name="maxParticipants"
+        />
+        
+        <Input
+          type="text"
+          update={create}
+          placeholder="Enter the link to the poster"
+          message="Poster link"
+          description="*Make sure the link is publicly accessible."
+          name="link"
         />
 
         <div className="mt-4">

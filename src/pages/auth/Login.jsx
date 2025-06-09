@@ -29,10 +29,10 @@ const Login = (props) => {
   const showTempAlert = (type) => {
     if (type === "email") {
       setEmailError(true);
-      setTimeout(() => setEmailError(false), 3000);
+      setTimeout(() => setEmailError(false), 1500);
     } else if (type === "password") {
       setPasswordError(true);
-      setTimeout(() => setPasswordError(false), 3000);
+      setTimeout(() => setPasswordError(false), 1500);
     }
   };
 
